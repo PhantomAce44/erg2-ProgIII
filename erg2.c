@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <time.h>
 
 #define NUM_PRODUCTS 20
 #define MAX_ORDER 10
@@ -23,12 +24,22 @@ int total_products_requested = 0;
 int total_products_sold = 0;
 float total_revenue = 0.0;
 
-// Initialize product catalog
+// Initialize product catalog with random data
 void initialize_catalog() {
+    const char* product_names[] = {"Widget", "Gadget", "Tool", "Device", "Item", "Accessory", "Appliance", "Thing"};
+    srand(time(NULL));  // Seed the random number generator
+
     for (int i = 0; i < NUM_PRODUCTS; i++) {
-        snprintf(catalog[i].description, sizeof(catalog[i].description), "Product %d", i);
-        catalog[i].price = (i + 1) * 10.0;
-        catalog[i].item_count = 2;
+        // Randomly generate product description
+        int name_index = rand() % 8;
+        int suffix = rand() % 100;  // Random number to make each description unique
+        snprintf(catalog[i].description, sizeof(catalog[i].description), "%s %d", product_names[name_index], suffix);
+
+        // Randomize price between 10 and 100
+        catalog[i].price = 10.0 + (rand() % 91);  // Price between 10 and 100
+
+        // Randomize item count between 1 and 5
+        catalog[i].item_count = rand() % 5 + 1;
     }
 }
 
