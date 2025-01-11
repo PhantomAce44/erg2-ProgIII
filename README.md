@@ -1,2 +1,2 @@
 # erg2-ProgIII
-this is a Directory!
+this is a README Directory!
