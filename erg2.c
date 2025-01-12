@@ -24,26 +24,26 @@ int total_products_requested = 0;
 int total_products_sold = 0;
 float total_revenue = 0.0;
 
-// Initialize product catalog with random data
+// Arxikopoiisi katalogou me tyxaia dedomena
 void initialize_catalog() {
     const char* product_names[] = {"Widget", "Gadget", "Tool", "Device", "Item", "Accessory", "Appliance", "Thing"};
-    srand(time(NULL));  // Seed the random number generator
+    srand(time(NULL));  // Ekkinisi tis gennitrias tyxaiwn arithmwn
 
     for (int i = 0; i < NUM_PRODUCTS; i++) {
-        // Randomly generate product description
+        // Dimiourgia perigrafis proiontos tyxaia
         int name_index = rand() % 8;
-        int suffix = rand() % 100;  // Random number to make each description unique
+        int suffix = rand() % 100;  // Tyxaios arithmos gia na ginei kathe perigrafi monadiki
         snprintf(catalog[i].description, sizeof(catalog[i].description), "%s %d", product_names[name_index], suffix);
 
-        // Randomize price between 10 and 100
+        // Tyxaia epilogi timis metaksi 10 kai 100
         catalog[i].price = 10.0 + (rand() % 91);  // Price between 10 and 100
 
-        // Randomize item count between 1 and 5
+        // Tyxaia epilogi posotitas antikeimenwn metaksi 1 kai 5
         catalog[i].item_count = rand() % 5 + 1;
     }
 }
 
-// Process individual order
+// Epeksergasia memonomenis paraggelias
 void process_order(int product_id, int pipe_write) {
     if (product_id >= NUM_PRODUCTS || catalog[product_id].item_count <= 0) {
         write(pipe_write, "Order Failed", sizeof("Order Failed"));
@@ -55,7 +55,7 @@ void process_order(int product_id, int pipe_write) {
     }
 }
 
-// Serve a single customer
+// Eksypiretisi enos pelati
 void serve_customer(int pipe_read, int pipe_write) {
     int product_id;
     while (read(pipe_read, &product_id, sizeof(product_id)) > 0) {
@@ -71,10 +71,10 @@ void serve_customer(int pipe_read, int pipe_write) {
     }
 }
 
-// Customer process
+// Diadikasia pelati
 void customer(int customer_id, int pipe_read, int pipe_write) {
     srand(customer_id);
-    float customer_total = 0.0;  // Accumulate total purchases for this customer
+    float customer_total = 0.0;  // Syskentrosi synolikwn agorwn gia ayton ton pelati
 
     for (int i = 0; i < MAX_ORDER; i++) {
         int product_id = rand() % NUM_PRODUCTS;
@@ -83,22 +83,22 @@ void customer(int customer_id, int pipe_read, int pipe_write) {
         char response[100];
         read(pipe_read, response, sizeof(response));
 
-        // If order was successful, extract the price and add to customer_total
+        // An i paraggelia itan epityxis eksagoume tin timi kai tin prosthetoume sto customer_total
         if (strstr(response, "Order Success") != NULL) {
             float price;
             sscanf(response, "Order Success, Total: %f", &price);
             customer_total += price;
         }
 
-        // Sleep for 1 second before placing the next order
+        // Xrisimopoioyme sleep gia ena deuterolepto prin topothetisoume tin epomeni paraggelia
         sleep(1);  // Adds a 1-second delay between each order
     }
 
-    // Print the customer's total after all their orders
+    // Emfanise to synoliko poso tou pelati meta apo oles tis paraggelies tou
     printf("Client %d: Purchase complete, your total is: %.2f euro.\n", customer_id, customer_total);
 }
 
-// Main function
+// Kyrio programma
 int main() {
     initialize_catalog();
 
@@ -133,7 +133,7 @@ int main() {
         wait(NULL);
     }
 
-    // Final output summary
+    // Synopsi telikou apotelesmatos
     printf("\n%d requests were made, where %d succeeded and %d failed\n", 
            total_products_requested, total_successful, total_failed);
     printf("%d products were requested, where %d products were bought, totaling %.2f euros\n",
