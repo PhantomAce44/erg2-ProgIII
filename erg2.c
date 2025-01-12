@@ -36,7 +36,7 @@ void initialize_catalog() {
         snprintf(catalog[i].description, sizeof(catalog[i].description), "%s %d", product_names[name_index], suffix);
 
         // Tyxaia epilogi timis metaksi 10 kai 100
-        catalog[i].price = 10.0 + (rand() % 91);  // Price between 10 and 100
+        catalog[i].price = 10.0 + (rand() % 91);  // Timi metaksi 10 kai 100
 
         // Tyxaia epilogi posotitas antikeimenwn metaksi 1 kai 5
         catalog[i].item_count = rand() % 5 + 1;
